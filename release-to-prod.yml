@@ -1,0 +1,41 @@
+# Set the pipeline to run in the Microsoft-hosted Azure Pipelines pool
+pool:
+  name: Azure Pipelines
+
+  # Exports unmanaged managed solution from DEV environment, then
+  # unpacks, commits, and pushes it to the code repository.
+
+# Define the steps for the pipeline
+steps:
+  # Install the Power Platform Build Tools
+  - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.tool-installer.PowerPlatformToolInstaller@2
+    displayName: "Power Platform Tool Installer"
+
+  # Export the solution with the specified name
+  - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.export-solution.PowerPlatformExportSolution@2
+    displayName: "Power Platform Export Solution"
+    inputs:
+      authenticationType: PowerPlatformSPN
+      PowerPlatformSPN: $(PowerPlatformSPN)
+      SolutionName: $(SolutionName)
+      SolutionOutputFile: '$(Build.ArtifactStagingDirectory)\$(SolutionName).zip'
+
+  # Unpack the exported solution
+  - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.unpack-solution.PowerPlatformUnpackSolution@2
+    displayName: "Power Platform Unpack Solution"
+    inputs:
+      SolutionInputFile: '$(Build.ArtifactStagingDirectory)\$(SolutionName).zip'
+      SolutionTargetFolder: '$(Build.SourcesDirectory)\$(SolutionName)'
+
+  # Run a command-line script to commit and push changes to the repository
+  - script: |
+      echo commit all changes
+      git config user.email "userXXX@wrkdevops.onmicrosoft.com"
+      git config user.name "Automatic Build"
+      git init
+      git checkout -b main
+      git add --all
+      git commit -m "solution init"
+      echo push code to new repo
+      git  -c http.extraheader="AUTHORIZATION: bearer $(System.AccessToken)" push origin main
+    displayName: "Command Line Script"

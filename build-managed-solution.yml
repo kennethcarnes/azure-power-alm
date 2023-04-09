@@ -1,0 +1,46 @@
+# Set the pipeline to run in the Microsoft-hosted Azure Pipelines pool
+pool:
+  name: Azure Pipelines
+
+# Define the build steps
+steps:
+  - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.tool-installer.PowerPlatformToolInstaller@2
+    displayName: "Power Platform Tool Installer "
+
+  # Pack the unmanaged solution into a ZIP file
+  - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.pack-solution.PowerPlatformPackSolution@2
+    displayName: "Power Platform Pack Solution "
+    inputs:
+      # Specify the source location
+      SolutionSourceFolder: '$(Build.SourcesDirectory)\$(SolutionName)'
+      # Specify the output location
+      SolutionOutputFile: ' $(Build.ArtifactStagingDirectory)\$(SolutionName).zip'
+
+  # Import the unmanaged solution into the BUILD environment
+  - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.import-solution.PowerPlatformImportSolution@2
+    displayName: "Power Platform Import Solution "
+    inputs:
+      # Authenticate via service principal name (SPN)
+      authenticationType: PowerPlatformSPN
+      # Specify the service principal name
+      PowerPlatformSPN: $(PowerPlatformSPN)
+      # Specify the location of the ZIP file to import
+      SolutionInputFile: '$(Build.ArtifactStagingDirectory)\$(SolutionName).zip'
+
+  # Export the managed solution to Azure Artifacts
+  - task: microsoft-IsvExpTools.PowerPlatform-BuildTools.export-solution.PowerPlatformExportSolution@2
+    displayName: "Power Platform Export Solution "
+    inputs:
+      # Authenticate to BUILD environment via service principal name (SPN)
+      authenticationType: PowerPlatformSPN
+      PowerPlatformSPN: $(PowerPlatformSPN)
+      # Specify the name of the solution to export
+      SolutionName: $(SolutionName)
+      # Specify the location and name of the exported ZIP file
+      SolutionOutputFile: '$(Build.ArtifactStagingDirectory)\$(SolutionName)_managed.zip'
+      # Set the solution to be managed
+      Managed: true
+
+  # Publish the build artifacts
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish Artifact: drop"
