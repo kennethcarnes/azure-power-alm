@@ -30,7 +30,7 @@ nt-server-server-authentication#application-user-creation).
 | build-managed-solution.yml | Builds a managed solution using the Power Platform Build Tools, imports it into the build environment, and exports it to Artifacts as a managed solution. |
 | release-to-prod.yml        | Imports a managed solution into the PROD environment using the Power Platform Import Solution task.                                 |
    
-### Add a variable group with the variables below.
+5. Add a variable group with the variables below.
 
 | Variable            | Description                                                                                                                                                                                                               |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
