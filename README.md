@@ -9,8 +9,8 @@ Diagram in progress.
 ## Getting Started 
 To get started, follow the steps below: 
 
-1. (Create the DEV, BUILD, and PROD environments in the Power Platform Admin Center.)[https://learn.microsoft.com/en-us/power-platform/admin/create-environment#create-an-environment-in-the-power-platform-admin-center]
-2. Create an Azure AD service principal and client secret using the (PowerShell script provided by Microsoft)[https://pabuildtools.blob.core.windows.net/spn-docs-4133a3fe/New-CrmServicePrincipal.ps1].
+1. [Create the DEV, BUILD, and PROD environments in the Power Platform Admin Center.](https://learn.microsoft.com/en-us/power-platform/admin/create-environment#create-an-environment-in-the-power-platform-admin-center)
+2. Create an Azure AD service principal and client secret using the [PowerShell script provided by Microsoft](https://pabuildtools.blob.core.windows.net/spn-docs-4133a3fe/New-CrmServicePrincipal.ps1).
 
     ```powershell
     .\New-CrmServicePrincipal.ps1
