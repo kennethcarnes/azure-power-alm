@@ -1,5 +1,5 @@
 # Introduction 
-This project uses Azure Pipelines and Power Platform Solutions to build and deploy apps. Everything in this repository was adapted from this [Power Platform Build Tools](https://github.com/microsoft/PowerApps-Samples/tree/master/build-tools) repository by Microsoft. 
+This project uses Azure Pipelines, Repos, and Service Principal for CI/CD of Power Platform Solutions. Everything in this repository was adapted from this [Power Platform Build Tools](https://github.com/microsoft/PowerApps-Samples/tree/master/build-tools) repository by Microsoft. All credit goes to that team.
 
 <!---
 Download the Visio package by [sandroasp](https://github.com/sandroasp/Microsoft-Integration-and-Azure-Stencils-Pack-for-Visio).
