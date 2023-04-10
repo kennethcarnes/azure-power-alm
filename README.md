@@ -1,32 +1,34 @@
 # Introduction 
-This project aims to guide users on how to create pipelines to build and deploy Power Platform solutions using Azure DevOps. The motivation behind this project is to provide a step-by-step process to help users manage their Power Platform solutions efficiently.
+This project uses Azure Pipelines and Power Platform Solutions to build and deploy apps. Everything in this repository was adapted from this [Power Platform Build Tools](https://github.com/microsoft/PowerApps-Samples/tree/master/build-tools) repository by Microsoft. 
 
-## Credit 
-The pipelines used in this project are adapted from the [PowerApps-Samples](https://github.com/microsoft/PowerApps-Samples/tree/master/build-tools) repository by Microsoft. 
-
- Download the Visio package by [sandroasp](https://github.com/sandroasp/Microsoft-Integration-and-Azure-Stencils-Pack-for-Visio).
+<!---
+Download the Visio package by [sandroasp](https://github.com/sandroasp/Microsoft-Integration-and-Azure-Stencils-Pack-for-Visio).
+Diagram in progress.
+-->
  
 ## Getting Started 
 To get started, follow the steps below: 
 
-1. Create the desired number of Power Platform environments.
-2. Create an Azure AD service principal and client secret using the PowerShell script provided by Microsoft:
+1. [Create the DEV, BUILD, and PROD environments in the Power Platform Admin Center.](https://learn.microsoft.com/en-us/power-platform/admin/create-environment#create-an-environment-in-the-power-platform-admin-center)
+2. Create an Azure AD service principal and client secret using the (PowerShell script provided by Microsoft)[https://pabuildtools.blob.core.windows.net/spn-docs-4133a3fe/New-CrmServicePrincipal.ps1].
 
     ```powershell
     .\New-CrmServicePrincipal.ps1
     ```
+    
+> **Note**
+> Steps to complete this manually can be found (here)[https://learn.microsoft.com/en-us/powerapps/developer/common-data-service/use-single-tenant-server-server-authentication#azure-application-registration]
 
-Use the output from the previous step to configure an [Application User](https://learn.microsoft.com/en-us/powerapps/developer/common-data-service/use-single-tenant-server-server-authentication#application-user-creation) with the System Administrator role in each environment.
+3. To finish configuring the Service Principal, use the Application ID and Client Secret from the previous step to configure an [Application User](https://learn.microsoft.com/en-us/powerapps/developer/common-data-service/use-single-tenant-server-server-authentication#application-user-creation) with the System Administrator role in each environment.
 nt-server-server-authentication#application-user-creation).
 
-### Create pipelines in Azure DevOps
+4. Create pipelines in Azure DevOps.
 
 | File Name                  | Description                                                                                                                         |
 | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | export-from-dev.yml        | Exports an unmanaged solution from the DEV environment, then unpacks, commits, and pushes it to the code repository.               |
 | build-managed-solution.yml | Builds a managed solution using the Power Platform Build Tools, imports it into the build environment, and exports it to Artifacts as a managed solution. |
 | release-to-prod.yml        | Imports a managed solution into the PROD environment using the Power Platform Import Solution task.                                 |
-
    
 ### Add a variable group with the variables below.
 
